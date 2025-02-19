@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="manifest" href="/manifest.json">
+</head>
+
+<body>
+    <script>if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("/service-worker.js")
+                    .then((reg) => console.log("Service Worker registrado!", reg))
+                    .catch((err) => console.log("Erro ao registrar o Service Worker", err));
+            });
+        }
+    </script>
+    <button id="installPWA">Instalar App</button>
+
+    <script>
+        let deferredPrompt;
+
+        window.addEventListener("beforeinstallprompt", (event) => {
+            event.preventDefault();
+            deferredPrompt = event;
+
+            document.getElementById("installPWA").style.display = "block";
+        });
+
+        document.getElementById("installPWA").addEventListener("click", async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`O usuário escolheu: ${outcome}`);
+                deferredPrompt = null;
+            }
+        });
+    </script>
+    <h1>DELTA TV</h1>
+    <br>
+    <a href="index.html">Inicio</a><br>
+    <a href="planos.html">Planos</a><br>
+    <a href="indicacao.html">Indique e ganhe</a><br>
+    <a href="http://webtv.iptvblinkplayer.com/xtream-code">Login</a>
+    <br>
+</body>
+
+</html>
